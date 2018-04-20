@@ -2,6 +2,7 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const requestApi = require("request"); 
 
 const restService = express();
 
@@ -20,6 +21,13 @@ restService.post("/echo", function(req, res) {
     req.body.result.parameters.echoText
       ? req.body.result.parameters.echoText
       : "Seems like some problem. Speak again.";
+
+      requestApi('https://reqres.in/api/users/2', function (error, response, body) { 
+        console.log('error:', error); // Print the error if one occurred 
+        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received 
+        console.log('body:', body); // Print the HTML for the Google homepage. 
+      }); 
+
   return res.json({
     speech: speech,
     displayText: speech,
