@@ -24,14 +24,27 @@ restService.post("/echo", function(req, res) {
       : "Seems like some problem. Speak again.";
 
       requestApi('https://reqres.in/api/users/' + parameter, function (error, response, body) { 
-        var data = JSON.parse(body).data;
-        var userName = 'The employee name is ' + data.first_name + " " + data.last_name;
-        console.log('Username:',userName);
-        return res.json({
-          speech: userName,
-          displayText: userName,
-          source: "webhook-echo-sample"
-        });
+        if(error) {
+          console.log("Error-->", error);
+        } else {
+          var data = JSON.parse(body).data;
+          if(data != undefined) {
+            var userName = 'The employee name is ' + data.first_name + " " + data.last_name;
+            console.log('Username:',userName);
+            return res.json({
+              speech: userName,
+              displayText: userName,
+              source: "webhook-echo-sample"
+            });
+          } else {
+            return res.json({
+              speech: "Employee not found.",
+              displayText: "Employee not found.",
+              source: "webhook-echo-sample"
+            });
+          }
+        }
+        
          // Print the HTML for the Google homepage. 
       }); 
   
