@@ -22,17 +22,18 @@ restService.post("/echo", function(req, res) {
       ? req.body.result.parameters.echoText
       : "Seems like some problem. Speak again.";
 
-      requestApi('https://reqres.in/api/users/2', function (error, response, body) { 
-        console.log('error:', error); // Print the error if one occurred 
-        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received 
-        console.log('body:', body); // Print the HTML for the Google homepage. 
+      requestApi('https://reqres.in/api/users/', function (error, response, body) { 
+        var data = JSON.parse(body).data;
+        var userName = data[0].first_name + " " + data[0].last_name;
+        console.log('Username:',userName);
+        return res.json({
+          speech: userName,
+          displayText: userName,
+          source: "webhook-echo-sample"
+        });
+         // Print the HTML for the Google homepage. 
       }); 
-
-  return res.json({
-    speech: speech,
-    displayText: speech,
-    source: "webhook-echo-sample"
-  });
+  
 });
 
 restService.post("/audio", function(req, res) {
@@ -204,5 +205,5 @@ restService.post("/slack-test", function(req, res) {
 });
 
 restService.listen(process.env.PORT || 8000, function() {
-  console.log("Server up and listening");
+  console.log("Server up and listening 8000");
 });
