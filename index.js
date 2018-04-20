@@ -15,16 +15,17 @@ restService.use(
 restService.use(bodyParser.json());
 
 restService.post("/echo", function(req, res) {
+  var parameter = req.body.result.parameters.echoText;
   var speech =
     req.body.result &&
     req.body.result.parameters &&
-    req.body.result.parameters.echoText
-      ? req.body.result.parameters.echoText
+    parameter
+      ? parameter
       : "Seems like some problem. Speak again.";
 
-      requestApi('https://reqres.in/api/users/', function (error, response, body) { 
+      requestApi('https://reqres.in/api/users/' + parameter, function (error, response, body) { 
         var data = JSON.parse(body).data;
-        var userName = data[0].first_name + " " + data[0].last_name;
+        var userName = 'The employee name is ' + data.first_name + " " + data.last_name;
         console.log('Username:',userName);
         return res.json({
           speech: userName,
